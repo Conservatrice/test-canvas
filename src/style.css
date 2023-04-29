@@ -1,0 +1,13 @@
+body {
+  margin: 0 auto;
+}
+
+.wrapper {
+
+}
+
+.canvas {
+  border: 1px solid #000000; 
+  margin-left: 5px;
+  margin-top: 5px;
+}
