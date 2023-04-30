@@ -11,30 +11,17 @@ window.onload = () => {
 
     const APP_TEMPS = 0.5; 
 
-
     const myInterval = setInterval(animated, APP_TEMPS);  //temps
 
-    //Balle 
 
-    let diametreBalle = 5;
-    let posXBalle = 1 + diametreBalle /2;
-    let posYBalle = 1 + diametreBalle /2;
-    let vitesseXBalle = 3;
-    let vitesseYBalle = 3;
+    parametresBalle(diametreBalle, posXBalle, posYBalle, vitesseXBalle, vitesseYBalle);
+    parametresBalle(largeurCarre, hauteurCarre, posXCarre, posYCarre, vitesseXCarre, vitesseYCarre);
 
-    let largeurCarre = 10;
-    let hauteurCarre = 10;
-    let posXCarre = 250;
-    let posYCarre = 10;
-    let vitesseXCarre = 1;
-    let vitesseYCarre = 1;
 
     function animated() { //dans quelle mesure
         context.clearRect(0, 0, canvas.width, canvas.height); // (positionx, positiony, longueurx, longueury) à effacer
         context.beginPath();
         context.arc(posXBalle, posYBalle, diametreBalle / 2, 0, Math.PI * 2);
-
-
         context.fillRect(posXCarre, posYCarre, largeurCarre, hauteurCarre); // particularités rectangle
         context.fill();
 
@@ -45,25 +32,50 @@ window.onload = () => {
         vitesseYCarre = collisionCarreCanvasVertical(posYCarre, hauteurCarre, vitesseYCarre, canvas);
 
 
-        // if(posXBalle >= posXCarre ){
-        //     vitesseXBalle *= -1;
-        // }
-        // if(posYBalle >= posYCarre){
-        //     vitesseYBalle *= -1;
-        // }
+        vitesseXBalleC = collisionBalleCarreHorizontal(posXBalle, posXCarre, diametreBalle, vitesseXBalle, vitesseXCarre);
+        vitesseXCarreB = collisionBalleCarreHorizontal(posXBalle, posXCarre, diametreBalle, vitesseXBalle, vitesseXCarre);
+
+        vitesseYBalleC = collisionBalleCarreVertical(posYBalle, posYCarre, diametreBalle, vitesseYBalle, vitesseYCarre);
+        vitesseYCarreB = collisionBalleCarreVertical(posYBalle, posYCarre, diametreBalle, vitesseYBalle, vitesseYCarre);
+
 
         posXBalle += vitesseXBalle;
         posYBalle += vitesseYBalle;
-
-
-
-
-
 
         posXCarre += vitesseXCarre;
         posYCarre += vitesseYCarre;
     }
 
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////// FONCTIONS ///////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////// BALLE ////////////////////////////////////////////////////
+    function parametresBalle(diametreBalle, posXBalle, posYBalle, vitesseXBalle, vitesseYBalle){
+        let diametreBalle = 5;
+        let posXBalle = 1 + diametreBalle /2;
+        let posYBalle = 1 + diametreBalle /2;
+        let vitesseXBalle = 3;
+        let vitesseYBalle = 3;
+    }
+    //////////////////////////////// CARRE ////////////////////////////////////////////////////
+    function parametresBalle(largeurCarre, hauteurCarre, posXCarre, posYCarre, vitesseXCarre, vitesseYCarre){
+        let largeurCarre = 10;
+        let hauteurCarre = 10;
+        let posXCarre = 250;
+        let posYCarre = 10;
+        let vitesseXCarre = 1;
+        let vitesseYCarre = 1;
+    }
+
+//////////////////////////////// CARRE_CANVAS ////////////////////////////////////////////////////
     function collisionCarreCanvasHorizotal(posXCarre, largeurCarre, vitesseXCarre, canvas){
         if(posXCarre + largeurCarre >= canvas.width || posXCarre <= 0){
             vitesseXCarre *= -1;
@@ -80,10 +92,8 @@ window.onload = () => {
     }
 
 
-
-
-///////////////////////BALLE///////////////////////////////////////
-    function collisionBalleCanvasHorizontal(posXBalle, diametreBalle, vitesseXBalle, canvas) {
+/////////////////////// BALLE_CANVAS ///////////////////////////////////////
+    function collisionBalleCanvasHorizontal(posXBalle, diametreBalle, vitesseXBalle, canvas){
         if(posXBalle + diametreBalle / 2 >= canvas.width || posXBalle <= 0 + diametreBalle / 2){
             vitesseXBalle *= -1;
         }
@@ -91,11 +101,30 @@ window.onload = () => {
         return vitesseXBalle;
     }
 
-    function collisionBalleCanvasVertical(posYBalle, diametreBalle, vitesseYBalle, canvas) {
+    function collisionBalleCanvasVertical(posYBalle, diametreBalle, vitesseYBalle, canvas){
         if(posYBalle + diametreBalle / 2 >= canvas.height || posYBalle <= 0 + diametreBalle / 2){
             vitesseYBalle *= -1;
         }
 
         return vitesseYBalle;
     }
+/////////////////////// BALLE_CARRE ///////////////////////////////////////
+    function collisionBalleCarreHorizontal(posXBalle, posXCarre, diametreBalle, vitesseXBalle, vitesseXCarre){
+        if(posXBalle + diametreBalle / 2 >= posXCarre){
+            vitesseXBalleC = vitesseXBalle * -1;
+            vitesseXCarreB = vitesseXCarre * -1;
+        }
+        return vitesseXBalleC && vitesseXCarreB;
+    }
+    function collisionBalleCarreVertical(posYBalle, posYCarre, diametreBalle, vitesseYBalle, vitesseYCarre){
+        if(posYBalle + diametreBalle / 2 >= posYCarre){
+            vitesseYBalleC = vitesseYBalle * -1;
+            vitesseYCarreB = vitesseYCarre * -1;
+        }
+        return vitesseYBalleC && vitesseYCarreB;
+    }
 }
+
+
+
+addEventListener("keypress", myFunction);
